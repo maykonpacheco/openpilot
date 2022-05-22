@@ -565,7 +565,7 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
                                   this));
 
   toggles.append(new ParamControl("SpeedLimitPercOffset",
-                                  "Enable Speed Limit Offset",
+                                  "Enable Speed Limit % Offset",
                                   "Set speed limit slightly higher than actual speed limit for a more natural drive.",
                                   "../assets/offroad/icon_speed_limit.png",
                                   this));
@@ -591,6 +591,8 @@ SunnypilotPanel::SunnypilotPanel(QWidget* parent) : QWidget(parent) {
 
   toggle_layout->addWidget(horizontal_line());
   toggle_layout->addWidget(new CameraOffset());
+  toggle_layout->addWidget(horizontal_line());
+  toggle_layout->addWidget(new SpeedLimitValueOffset());
   toggle_layout->addWidget(horizontal_line());
   toggle_layout->addWidget(new AutoLaneChangeTimer());
   toggle_layout->addWidget(horizontal_line());

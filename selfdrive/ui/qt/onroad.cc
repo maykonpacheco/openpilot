@@ -29,13 +29,6 @@ OnroadWindow::OnroadWindow(QWidget *parent) : QWidget(parent) {
   hud = new OnroadHud(this);
   road_view_layout->addWidget(hud);
 
-  buttons = new ButtonsWindow(this);
-  QObject::connect(this, &OnroadWindow::updateStateSignal, buttons, &ButtonsWindow::updateState);
-  QObject::connect(nvg, &NvgWindow::resizeSignal, [=] (int w) {
-    buttons->setFixedWidth(w);
-  });
-  stacked_layout->addWidget(buttons);
-
   QWidget * split_wrapper = new QWidget;
   split = new QHBoxLayout(split_wrapper);
   split->setContentsMargins(0, 0, 0, 0);
@@ -147,6 +140,8 @@ void OnroadWindow::mousePressEvent(QMouseEvent* e) {
   const QRect speed_limit_touch_rect = speed_sgn_rc.adjusted(-50, -50, 50, 50);
   const QRect debug_tap_rect = QRect(rect().center().x() - 200, rect().center().y() - 200, 400, 400);
   const QRect dev_ui_touch_rect = max_speed_rc;
+  const QRect dlp_btn_rect = QRect(bdr_s * 2 + 220, rect().bottom() - footer_h / 2 - 100, 192, 192);
+  const QRect gac_btn_rect = QRect(bdr_s * 2 + 220 + 222, rect().bottom() - footer_h / 2 - 100, 192, 192);
 
   if (longitudinal_plan.getSpeedLimit() > 0.0 && speed_limit_touch_rect.contains(e->x(), e->y())) {
     // If touching the speed limit sign area when visible
@@ -170,6 +165,34 @@ void OnroadWindow::mousePressEvent(QMouseEvent* e) {
       Params().put("DevUI", "1", 1);
     } else if (QUIState::ui_state.scene.dev_ui_enabled == 2) {
       Params().put("DevUI", "2", 1);
+    }
+    propagate_event = false;
+  }
+  else if (QUIState::ui_state.scene.end_to_end && dlp_btn_rect.contains(e->x(), e->y())) {
+    QUIState::ui_state.scene.dynamic_lane_profile = QUIState::ui_state.scene.dynamic_lane_profile + 1;
+    if (QUIState::ui_state.scene.dynamic_lane_profile > 2) {
+      QUIState::ui_state.scene.dynamic_lane_profile = 0;
+    }
+    if (QUIState::ui_state.scene.dynamic_lane_profile == 0) {
+      Params().put("DynamicLaneProfile", "0", 1);
+    } else if (QUIState::ui_state.scene.dynamic_lane_profile == 1) {
+      Params().put("DynamicLaneProfile", "1", 1);
+    } else if (QUIState::ui_state.scene.dynamic_lane_profile == 2) {
+      Params().put("DynamicLaneProfile", "2", 1);
+    }
+    propagate_event = false;
+  }
+  else if (QUIState::ui_state.scene.gap_adjust_cruise && gac_btn_rect.contains(e->x(), e->y())) {
+    QUIState::ui_state.scene.gap_adjust_cruise_tr = QUIState::ui_state.scene.gap_adjust_cruise_tr - 1;
+    if (QUIState::ui_state.scene.gap_adjust_cruise_tr < 1) {
+      QUIState::ui_state.scene.gap_adjust_cruise_tr = 3;
+    }
+    if (QUIState::ui_state.scene.gap_adjust_cruise_tr == 3) {
+      Params().put("GapAdjustCruiseTr", "3", 1);
+    } else if (QUIState::ui_state.scene.gap_adjust_cruise_tr == 2) {
+      Params().put("GapAdjustCruiseTr", "2", 1);
+    } else if (QUIState::ui_state.scene.gap_adjust_cruise_tr == 1) {
+      Params().put("GapAdjustCruiseTr", "1", 1);
     }
     propagate_event = false;
   }
@@ -208,118 +231,6 @@ void OnroadWindow::paintEvent(QPaintEvent *event) {
 }
 
 // ***** onroad widgets *****
-
-ButtonsWindow::ButtonsWindow(QWidget *parent) : QWidget(parent) {
-  QVBoxLayout *main_layout  = new QVBoxLayout(this);
-
-  QWidget *btns_wrapper = new QWidget;
-  QHBoxLayout *btns_layout  = new QHBoxLayout(btns_wrapper);
-  btns_layout->setSpacing(0);
-  btns_layout->setContentsMargins(282, 0, 30, 30);
-
-  main_layout->addWidget(btns_wrapper, 0, Qt::AlignBottom);
-
-  // Dynamic lane profile button
-  prev_dynamic_lane_profile = -1;
-  QString initDlpBtn = "";
-  dlpBtn = new QPushButton(initDlpBtn);
-  QObject::connect(dlpBtn, &QPushButton::clicked, [=]() {
-    QUIState::ui_state.scene.dynamic_lane_profile = QUIState::ui_state.scene.dynamic_lane_profile + 1;
-    if (QUIState::ui_state.scene.dynamic_lane_profile > 2) {
-      QUIState::ui_state.scene.dynamic_lane_profile = 0;
-    }
-    if (QUIState::ui_state.scene.dynamic_lane_profile == 0) {
-      Params().put("DynamicLaneProfile", "0", 1);
-      dlpBtn->setText("Lane\nonly");
-    } else if (QUIState::ui_state.scene.dynamic_lane_profile == 1) {
-      Params().put("DynamicLaneProfile", "1", 1);
-      dlpBtn->setText("Lane\nless");
-    } else if (QUIState::ui_state.scene.dynamic_lane_profile == 2) {
-      Params().put("DynamicLaneProfile", "2", 1);
-      dlpBtn->setText("Auto\nLane");
-    }
-  });
-  dlpBtn->setFixedWidth(200);
-  dlpBtn->setFixedHeight(200);
-  btns_layout->addWidget(dlpBtn, 0, Qt::AlignLeft);
-  btns_layout->addSpacing(35);
-
-  if (QUIState::ui_state.scene.end_to_end) {
-    dlpBtn->hide();
-  }
-
-  // Dynamic gap adjust cruise button
-  prev_gap_adjust_cruise_tr = -1;
-  QString initGacBtn = "";
-  gacBtn = new QPushButton(initGacBtn);
-  QObject::connect(gacBtn, &QPushButton::clicked, [=]() {
-    QUIState::ui_state.scene.gap_adjust_cruise_tr = QUIState::ui_state.scene.gap_adjust_cruise_tr - 1;
-    if (QUIState::ui_state.scene.gap_adjust_cruise_tr < 1) {
-      QUIState::ui_state.scene.gap_adjust_cruise_tr = 3;
-    }
-    if (QUIState::ui_state.scene.gap_adjust_cruise_tr == 3) {
-      Params().put("GapAdjustCruiseTr", "3", 1);
-      gacBtn->setText("Normal\nGap");
-    } else if (QUIState::ui_state.scene.gap_adjust_cruise_tr == 2) {
-      Params().put("GapAdjustCruiseTr", "2", 1);
-      gacBtn->setText("Relax\nGap");
-    } else if (QUIState::ui_state.scene.gap_adjust_cruise_tr == 1) {
-      Params().put("GapAdjustCruiseTr", "1", 1);
-      gacBtn->setText("Traffic\nGap");
-    }
-  });
-  gacBtn->setFixedWidth(200);
-  gacBtn->setFixedHeight(200);
-  btns_layout->addWidget(gacBtn, 0, Qt::AlignLeft);
-  btns_layout->addStretch();
-
-  if (!QUIState::ui_state.scene.gap_adjust_cruise && QUIState::ui_state.scene.longitudinal_control) {
-    gacBtn->hide();
-  }
-
-  setStyleSheet(R"(
-    QPushButton {
-      color: white;
-      text-align: center;
-      padding: 0px;
-      border-width: 12px;
-      border-style: solid;
-      background-color: rgba(75, 75, 75, 0.3);
-    }
-  )");
-}
-
-void ButtonsWindow::updateState(const UIState &s) {
-  const SubMaster &sm = *(s.sm);
-  const auto gapAdjustCruiseTr = sm["carState"].getCarState().getGapAdjustCruiseTr();
-  if (prev_dynamic_lane_profile != QUIState::ui_state.scene.dynamic_lane_profile) {
-    prev_dynamic_lane_profile = QUIState::ui_state.scene.dynamic_lane_profile;
-    if (QUIState::ui_state.scene.dynamic_lane_profile == 0) {
-      dlpBtn->setStyleSheet(QString("font-size: 45px; border-radius: 100px; border-color: %1").arg(dlpBtnColors.at(0)));
-      dlpBtn->setText("Lane\nonly");
-    } else if (QUIState::ui_state.scene.dynamic_lane_profile == 1) {
-      dlpBtn->setStyleSheet(QString("font-size: 45px; border-radius: 100px; border-color: %1").arg(dlpBtnColors.at(1)));
-      dlpBtn->setText("Lane\nless");
-    } else if (QUIState::ui_state.scene.dynamic_lane_profile == 2) {
-      dlpBtn->setStyleSheet(QString("font-size: 45px; border-radius: 100px; border-color: %1").arg(dlpBtnColors.at(2)));
-      dlpBtn->setText("Auto\nLane");
-    }
-  }
-
-  if (prev_gap_adjust_cruise_tr != gapAdjustCruiseTr) {
-    prev_gap_adjust_cruise_tr = gapAdjustCruiseTr;
-    if (QUIState::ui_state.scene.gap_adjust_cruise_tr == 3 || gapAdjustCruiseTr == 3) {
-      gacBtn->setStyleSheet(QString("font-size: 45px; border-radius: 100px; border-color: %1").arg(gacBtnColors.at(2)));
-      gacBtn->setText("Normal\nGap");
-    } else if (QUIState::ui_state.scene.gap_adjust_cruise_tr == 2 || gapAdjustCruiseTr == 2) {
-      gacBtn->setStyleSheet(QString("font-size: 45px; border-radius: 100px; border-color: %1").arg(gacBtnColors.at(1)));
-      gacBtn->setText("Relax\nGap");
-    } else if (QUIState::ui_state.scene.gap_adjust_cruise_tr == 1 || gapAdjustCruiseTr == 1) {
-      gacBtn->setStyleSheet(QString("font-size: 45px; border-radius: 100px; border-color: %1").arg(gacBtnColors.at(0)));
-      gacBtn->setText("Traffic\nGap");
-    }
-  }
-}
 
 // OnroadAlerts
 void OnroadAlerts::updateAlert(const Alert &a, const QColor &color) {
@@ -445,6 +356,8 @@ void OnroadHud::updateState(const UIState &s) {
 
     const float speed_limit = lp.getSpeedLimit() * (s.scene.is_metric ? MS_TO_KPH : MS_TO_MPH);
     const float speed_limit_offset = lp.getSpeedLimitOffset() * (s.scene.is_metric ? MS_TO_KPH : MS_TO_MPH);
+    const float speed_limit_value_offset = lp.getSpeedLimitValueOffset();
+    const bool speed_limit_perc_offset = lp.getSpeedLimitPercOffset();
     const auto slcState = lp.getSpeedLimitControlState();
     const bool sl_force_active = s.scene.speed_limit_control_enabled &&
                                  seconds_since_boot() < s.scene.last_speed_limit_sign_tap + 2.0;
@@ -454,8 +367,10 @@ void OnroadHud::updateState(const UIState &s) {
                                   slcState == cereal::LongitudinalPlan::SpeedLimitControlState::TEMP_INACTIVE);
     const int sl_distance = int(lp.getDistToSpeedLimit() * (s.scene.is_metric ? MS_TO_KPH : MS_TO_MPH) / 10.0) * 10;
     const QString sl_distance_str(QString::number(sl_distance) + (s.scene.is_metric ? "m" : "f"));
-    const QString sl_offset_str(speed_limit_offset > 0.0 ?
-                                "+" + QString::number(std::nearbyint(speed_limit_offset)) : "");
+    const QString sl_offset_str(speed_limit_perc_offset ? speed_limit_offset > 0.0 ?
+                                "+" + QString::number(std::nearbyint(speed_limit_offset)) : "" :
+                                speed_limit_value_offset > 0.0 ? "+" + QString::number(std::nearbyint(speed_limit_value_offset)) :
+                                speed_limit_value_offset < 0.0 ? "-" + QString::number(std::nearbyint(speed_limit_value_offset)) : "");
     const QString sl_inactive_str(sl_temp_inactive ? "TEMP" : "");
     const QString sl_substring(sl_inactive || sl_temp_inactive ? sl_inactive_str :
                                sl_distance > 0 ? sl_distance_str : sl_offset_str);
@@ -499,6 +414,13 @@ void OnroadHud::updateState(const UIState &s) {
 
   setProperty("standStill", carState.getStandStill());
   setProperty("standstillElapsedTime", sm["lateralPlan"].getLateralPlan().getStandstillElapsed());
+
+  setProperty("endToEnd", s.scene.end_to_end);
+  setProperty("dynamicLaneProfile", s.scene.dynamic_lane_profile);
+
+  setProperty("gapAdjustCruise", s.scene.gap_adjust_cruise);
+  setProperty("gacTr", sm["carState"].getCarState().getGapAdjustCruiseTr());
+  setProperty("gapAdjustCruiseTr", s.scene.gap_adjust_cruise_tr);
 }
 
 void OnroadHud::paintEvent(QPaintEvent *event) {
@@ -597,6 +519,16 @@ void OnroadHud::paintEvent(QPaintEvent *event) {
       drawRightDevUi2(p, rect().right() - 184 - bdr_s * 2 - 184, bdr_s * 2 + rc2.height());
       drawRightDevUiBorder(p, rect().right() - 184 - bdr_s * 2 - 184, bdr_s * 2 + rc2.height());
     }
+  }
+
+  // Dynamic Lane Profile Button
+  if (endToEnd) {
+    drawDlpButton(p, bdr_s * 2 + 220, rect().bottom() - footer_h / 2 - 100, 192, 192);
+  }
+
+  // Gap Adjust Cruise Button
+  if (gapAdjustCruise) {
+    drawGacButton(p, bdr_s * 2 + 220 + 222, rect().bottom() - footer_h / 2 - 100, 192, 192);
   }
 }
 
@@ -1066,6 +998,67 @@ void OnroadHud::drawStandstillTimer(QPainter &p, int x, int y) {
   }
 
   drawStandstillTimerText(p, x, y, lab_str, val_str, labelColor, valueColor);
+}
+
+void OnroadHud::drawDlpButton(QPainter &p, int x, int y, int w, int h) {
+  int prev_dynamic_lane_profile = -1;
+  QString dlp_text = "";
+  QColor dlp_border = QColor(255, 255, 255, 255);
+
+  if (prev_dynamic_lane_profile != dynamicLaneProfile) {
+    prev_dynamic_lane_profile = dynamicLaneProfile;
+    if (dynamicLaneProfile == 0) {
+      dlp_text = "Lane\nonly";
+      dlp_border = QColor("#007d00");
+    } else if (dynamicLaneProfile == 1) {
+      dlp_text = "Lane\nless";
+      dlp_border = QColor("#c92231");
+    } else if (dynamicLaneProfile == 2) {
+      dlp_text = "Auto\nLane";
+      dlp_border = QColor("#7d007d");
+    }
+  }
+
+  QRect dlpBtn(x, y, w, h);
+  p.setPen(QPen(dlp_border, 12));
+  p.setBrush(QColor(75, 75, 75, 75));
+  p.drawEllipse(dlpBtn);
+  p.setPen(QColor(Qt::white));
+  configFont(p, "Open Sans", 45, "Regular");
+  p.drawText(dlpBtn, Qt::AlignCenter, dlp_text);
+}
+
+void OnroadHud::drawGacButton(QPainter &p, int x, int y, int w, int h) {
+  UIState *s = &QUIState::ui_state;
+  int prev_gap_adjust_cruise_tr = -1;
+  QString gac_text = "";
+  QColor gac_border = QColor(255, 255, 255, 255);
+  if ((prev_gap_adjust_cruise_tr != gapAdjustCruiseTr) || (prev_gap_adjust_cruise_tr != gacTr)) {
+    if (prev_gap_adjust_cruise_tr != gapAdjustCruiseTr) {
+      prev_gap_adjust_cruise_tr = gapAdjustCruiseTr;
+    } else {
+      prev_gap_adjust_cruise_tr = gacTr;
+      s->scene.gap_adjust_cruise_tr = gacTr;
+    }
+    if ((gapAdjustCruiseTr == 3) || (gacTr == 3)) {
+      gac_text = "Stock\nGap";
+      gac_border = QColor("#24a8bc");
+    } else if ((gapAdjustCruiseTr == 2) || (gacTr == 2)) {
+      gac_text = "Relax\nGap";
+      gac_border = QColor("#fcff4b");
+    } else if ((gapAdjustCruiseTr == 1) || (gacTr == 1)) {
+      gac_text = "Traffic\nGap";
+      gac_border = QColor("#37b868");
+    }
+  }
+
+  QRect gacBtn(x, y, w, h);
+  p.setPen(QPen(gac_border, 12));
+  p.setBrush(QColor(75, 75, 75, 75));
+  p.drawEllipse(gacBtn);
+  p.setPen(QColor(Qt::white));
+  configFont(p, "Open Sans", 45, "Regular");
+  p.drawText(gacBtn, Qt::AlignCenter, gac_text);
 }
 
 // NvgWindow

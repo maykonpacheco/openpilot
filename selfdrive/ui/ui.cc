@@ -97,7 +97,7 @@ static void update_model(UIState *s, const cereal::ModelDataV2::Reader &model) {
     max_distance = std::clamp((float)(lead_d - fmin(lead_d * 0.35, 10.)), 0.0f, max_distance);
   }
   max_idx = get_path_length_idx(model_position, max_distance);
-  update_line_data(s, model_position, 0.5, 1.22, &scene.track_vertices, max_idx);
+  update_line_data(s, model_position, scene.end_to_end ? 0.9 : 0.5, 1.22, &scene.track_vertices, max_idx);
 }
 
 static void update_sockets(UIState *s) {
@@ -240,6 +240,7 @@ static void update_status(UIState *s) {
       s->scene.dev_ui_enabled = std::stoi(Params().get("DevUI"));
       s->scene.gap_adjust_cruise = Params().getBool("GapAdjustCruise");
       s->scene.gap_adjust_cruise_tr = std::stoi(Params().get("GapAdjustCruiseTr"));
+      s->scene.speed_limit_value_offset = std::stoi(Params().get("SpeedLimitValueOffset"));
     }
     // Invisible until we receive a calibration message.
     s->scene.world_objects_visible = false;

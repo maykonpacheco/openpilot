@@ -533,3 +533,65 @@ void CameraOffset::refresh() {
   btnminus.setText("-");
   btnplus.setText("+");
 }
+
+// Speed Limit Control Custom Offset
+SpeedLimitValueOffset::SpeedLimitValueOffset() : AbstractControl("Speed Limit Offset (MPH / KM/H)*", "Set speed limit higher or lower than actual speed limit for a more personalized drive.\n*To use this feature, turn off \"Enable Speed Limit % Offset\".", "../assets/offroad/icon_speed_limit.png") {
+
+  label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+  label.setStyleSheet("color: #e0e879");
+  hlayout->addWidget(&label);
+
+  btnminus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btnplus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btnminus.setFixedSize(150, 100);
+  btnplus.setFixedSize(150, 100);
+  hlayout->addWidget(&btnminus);
+  hlayout->addWidget(&btnplus);
+
+  QObject::connect(&btnminus, &QPushButton::clicked, [=]() {
+    auto str = QString::fromStdString(params.get("SpeedLimitValueOffset"));
+    int value = str.toInt();
+    value = value - 1;
+    if (value <= -30 ) {
+      value = -30;
+    }
+    QString values = QString::number(value);
+    //QUIState::ui_state.speed_lim_off = value;
+    params.put("SpeedLimitValueOffset", values.toStdString());
+    refresh();
+  });
+
+  QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
+    auto str = QString::fromStdString(params.get("SpeedLimitValueOffset"));
+    int value = str.toInt();
+    value = value + 1;
+    if (value >= 30 ) {
+      value = 30;
+    }
+    QString values = QString::number(value);
+    //QUIState::ui_state.speed_lim_off = value;
+    params.put("SpeedLimitValueOffset", values.toStdString());
+    refresh();
+  });
+  refresh();
+}
+
+void SpeedLimitValueOffset::refresh() {
+  label.setText(QString::fromStdString(params.get("SpeedLimitValueOffset")));
+  btnminus.setText("-");
+  btnplus.setText("+");
+}

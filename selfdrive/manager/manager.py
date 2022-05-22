@@ -62,6 +62,7 @@ def manager_init():
     ("ShowDebugUI", "1"),
     ("SpeedLimitControl", "1"),
     ("SpeedLimitPercOffset", "1"),
+    ("SpeedLimitValueOffset", "0"),
     ("TurnSpeedControl", "1"),
     ("TurnVisionControl", "1"),
   ]

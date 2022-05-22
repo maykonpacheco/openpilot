@@ -110,3 +110,18 @@ private:
 
   void refresh();
 };
+
+class SpeedLimitValueOffset : public AbstractControl {
+  Q_OBJECT
+
+public:
+  SpeedLimitValueOffset();
+
+private:
+  QPushButton btnplus;
+  QPushButton btnminus;
+  QLabel label;
+  Params params;
+
+  void refresh();
+};

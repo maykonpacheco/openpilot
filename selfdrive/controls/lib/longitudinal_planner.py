@@ -16,6 +16,7 @@ from selfdrive.controls.lib.speed_limit_controller import SpeedLimitController, 
 from selfdrive.controls.lib.turn_speed_controller import TurnSpeedController
 from selfdrive.controls.lib.events import Events
 from selfdrive.swaglog import cloudlog
+from common.params import Params
 
 LON_MPC_STEP = 0.2  # first step is 0.2s
 AWARENESS_DECEL = -0.2  # car smoothly decel at .2m/s^2 when user is distracted
@@ -156,6 +157,8 @@ class Planner:
     longitudinalPlan.speedLimitControlState = self.speed_limit_controller.state
     longitudinalPlan.speedLimit = float(self.speed_limit_controller.speed_limit)
     longitudinalPlan.speedLimitOffset = float(self.speed_limit_controller.speed_limit_offset)
+    longitudinalPlan.speedLimitPercOffset = Params().get_bool("SpeedLimitPercOffset")
+    longitudinalPlan.speedLimitValueOffset = int(Params().get("SpeedLimitValueOffset"))
     longitudinalPlan.distToSpeedLimit = float(self.speed_limit_controller.distance)
     longitudinalPlan.isMapSpeedLimit = bool(self.speed_limit_controller.source == SpeedLimitResolver.Source.map_data)
     longitudinalPlan.eventsDEPRECATED = self.events.to_msg()
@@ -184,7 +187,10 @@ class Planner:
 
     if self.speed_limit_controller.is_active:
       a_solutions['limit'] = self.speed_limit_controller.a_target
-      v_solutions['limit'] = self.speed_limit_controller.speed_limit_offseted
+      if Params().get_bool("SpeedLimitPercOffset"):
+        v_solutions['limit'] = self.speed_limit_controller.speed_limit_offseted
+      else:
+        v_solutions['limit'] = self.speed_limit_controller.speed_limit + float(int(Params().get("SpeedLimitValueOffset")) * (CV.MPH_TO_MS if not Params().get_bool("IsMetric") else CV.KPH_TO_MS))
 
     if self.turn_speed_controller.is_active:
       a_solutions['turnlimit'] = self.turn_speed_controller.a_target

@@ -172,6 +172,7 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"SnoozeUpdate", CLEAR_ON_MANAGER_START | CLEAR_ON_IGNITION_OFF},
     {"SpeedLimitControl", PERSISTENT},
     {"SpeedLimitPercOffset", PERSISTENT},
+    {"SpeedLimitValueOffset", PERSISTENT},
     {"SshEnabled", PERSISTENT},
     {"SubscriberInfo", PERSISTENT},
     {"TermsVersion", PERSISTENT},

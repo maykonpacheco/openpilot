@@ -107,6 +107,7 @@ typedef struct UIScene {
   // Speed limit control
   bool speed_limit_control_enabled;
   bool speed_limit_perc_offset;
+  int speed_limit_value_offset;
 
   double last_speed_limit_sign_tap;
   cereal::PandaState::PandaType pandaType;

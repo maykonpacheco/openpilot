@@ -10,25 +10,6 @@
 
 // ***** onroad widgets *****
 
-class ButtonsWindow : public QWidget {
-  Q_OBJECT
-
-public:
-  ButtonsWindow(QWidget* parent = 0);
-
-private:
-  QPushButton *dlpBtn;
-  QPushButton *gacBtn;
-  int prev_dynamic_lane_profile;
-  int prev_gap_adjust_cruise_tr;
-
-  const QStringList dlpBtnColors = {"#007d00", "#c92231", "#7d007d"};
-  const QStringList gacBtnColors = {"#37b868", "#fcff4b", "#24a8bc"};
-
-public slots:
-  void updateState(const UIState &s);
-};
-
 class OnroadHud : public QWidget {
   Q_OBJECT
   Q_PROPERTY(QString speed MEMBER speed NOTIFY valueChanged);
@@ -84,6 +65,13 @@ Q_PROPERTY(QString roadName MEMBER roadName NOTIFY valueChanged);
   Q_PROPERTY(bool standStill MEMBER standStill NOTIFY valueChanged);
   Q_PROPERTY(int standstillElapsedTime MEMBER standstillElapsedTime NOTIFY valueChanged);
 
+  Q_PROPERTY(bool endToEnd MEMBER endToEnd NOTIFY valueChanged);
+  Q_PROPERTY(int dynamicLaneProfile MEMBER dynamicLaneProfile NOTIFY valueChanged);
+
+  Q_PROPERTY(bool gapAdjustCruise MEMBER gapAdjustCruise NOTIFY valueChanged);
+  Q_PROPERTY(int gacTr MEMBER gacTr NOTIFY valueChanged);
+  Q_PROPERTY(int gapAdjustCruiseTr MEMBER gapAdjustCruiseTr NOTIFY valueChanged);
+
 public:
   explicit OnroadHud(QWidget *parent);
   void updateState(const UIState &s);
@@ -106,6 +94,8 @@ private:
   void drawRightDevUi2(QPainter &p, int x, int y);
   void drawRightDevUiBorder(QPainter &p, int x, int y);
   void drawStandstillTimer(QPainter &p, int x, int y);
+  void drawDlpButton(QPainter &p, int x, int y, int w, int h);
+  void drawGacButton(QPainter &p, int x, int y, int w, int h);
   int drawDevUiElementRight(QPainter &p, int x, int y, const char* value, const char* label, const char* units, QColor &color);
   int drawDevUiElementLeft(QPainter &p, int x, int y, const char* value, const char* label, const char* units, QColor &color);
   void drawColoredText(QPainter &p, int x, int y, const QString &text, QColor &color);
@@ -173,6 +163,13 @@ private:
 
   bool standStill;
   int standstillElapsedTime;
+
+  bool endToEnd;
+  int dynamicLaneProfile;
+
+  bool gapAdjustCruise;
+  int gacTr;
+  int gapAdjustCruiseTr;
 
 signals:
   void valueChanged();
