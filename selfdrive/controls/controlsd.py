@@ -266,7 +266,7 @@ class Controls:
 
     # Handle AleSato AutoHold
     if CS.genericToggle:
-      self.event.add(EventName.autoHold)
+      self.events.add(EventName.autoHold)
 
     for i, pandaState in enumerate(self.sm['pandaStates']):
       # All pandas must match the list of safetyConfigs, and if outside this list, must be silent or noOutput

@@ -117,6 +117,7 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     speedLimitActive @116;
     speedLimitValueChange @117;
     standStill @118;
+    autoHold @119
 
     driverMonitorLowAccDEPRECATED @68;
     radarCanErrorDEPRECATED @15;
