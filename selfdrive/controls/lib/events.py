@@ -368,6 +368,14 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
       Priority.LOW, VisualAlert.ldw, AudibleAlert.prompt, 3.),
   },
 
+  EventName.autoHold: {
+    ET.PRE_ENABLE: Alert(
+      "Auto Hold Good Now?",
+      "",
+      AlertStatus.normal, AlertSize.small,
+      Priority.LOWEST, VisualAlert.none, AudibleAlert.none, .1, creation_delay=1.),
+  },
+  
   # ********** events only containing alerts that display while engaged **********
 
   EventName.gasPressed: {

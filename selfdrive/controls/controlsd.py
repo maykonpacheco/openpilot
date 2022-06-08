@@ -264,6 +264,10 @@ class Controls:
     if self.can_rcv_error or not CS.canValid:
       self.events.add(EventName.canError)
 
+    # Handle AleSato AutoHold
+    if CS.genericToggle:
+      self.event.add(EventName.autoHold)
+
     for i, pandaState in enumerate(self.sm['pandaStates']):
       # All pandas must match the list of safetyConfigs, and if outside this list, must be silent or noOutput
       if i < len(self.CP.safetyConfigs):
