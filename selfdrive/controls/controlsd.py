@@ -249,12 +249,12 @@ class Controls:
       else:
         if direction == LaneChangeDirection.left:
           if lane_change_set_timer == 0:
-            self.events.add(EventName.preLaneChangeLeft)
+            self.events.add(EventName.autoHold) #preLaneChangeLeft 
           else:
             self.events.add(EventName.laneChange)
         else:
           if lane_change_set_timer == 0:
-            self.events.add(EventName.preLaneChangeRight)
+            self.events.add(EventName.autoHold) #preLaneChangeRight
           else:
             self.events.add(EventName.laneChange)
     elif self.sm['lateralPlan'].laneChangeState in [LaneChangeState.laneChangeStarting,
