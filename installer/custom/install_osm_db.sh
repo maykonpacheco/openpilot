@@ -1,7 +1,7 @@
 export OSM_DIR=/data/osm
 export DB_DIR=${OSM_DIR}/db
-export GZ_MAP_FILE_AREA=south-america
-export GZ_MAP_FILE_NAME=brazil-latest.osm.bz2
+export GZ_MAP_FILE_AREA=north-america
+export GZ_MAP_FILE_NAME=us-latest.osm.bz2
 export GZ_MAP_FILE=${OSM_DIR}/${GZ_MAP_FILE_NAME}
 
 # Remove legacy compressed map file if existing
