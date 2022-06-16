@@ -5,7 +5,7 @@ export GZ_MAP_FILE_NAME=brazil-latest.osm.bz2
 export GZ_MAP_FILE=${OSM_DIR}/${GZ_MAP_FILE_NAME}
 
 # Remove legacy compressed map file if existing
-[ -f $GZ_MAP_FILE ] && rm -rf $GZ_MAP_FILE
+rm -rf $GZ_MAP_FILE
 
 # WD
 cd $OSM_DIR
@@ -18,9 +18,9 @@ if [[ "$?" != 0 ]]; then
 else
   echo "Successfuly downloaded map file"
   # Remove current db dir if exisiting
-  [ -f $DB_DIR ] && rm -rf $DB_DIR
+  rm -rf $DB_DIR
   # Populate data-base (U can do this outside and after ftp put in DB_DIR)
-  /data/src/bin/init_osm3s.sh $GZ_MAP_FILE_NAME $DB_DIR $EXEC_DIR --meta 
+  /data/osm/v0.7.56/bin/init_osm3s.sh $GZ_MAP_FILE_NAME $DB_DIR $EXEC_DIR --meta 
   # Remove compressed map files after expanding
   rm -rf $GZ_MAP_FILE_NAME
 fi
