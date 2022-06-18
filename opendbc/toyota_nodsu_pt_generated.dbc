@@ -313,7 +313,6 @@ CM_ SG_ 466 CRUISE_STATE "Active state is 8, if standstill is requested will swi
 CM_ SG_ 467 SET_SPEED "43 kph are shown as 28mph, so conversion isn't perfect";
 CM_ SG_ 467 LOW_SPEED_LOCKOUT "in low speed lockout, system would always disengage below 28mph";
 CM_ SG_ 560 BRAKE_PRESSED "another brake pressed?";
-CM_ SG_ 581 GAS_PEDAL "it seems slightly filtered";
 CM_ SG_ 608 STEER_TORQUE_DRIVER "driver torque";
 CM_ SG_ 608 STEER_OVERRIDE "set when driver torque exceeds a certain value";
 CM_ SG_ 614 ANGLE "set to measured angle when ipas control isn't active";
@@ -441,6 +440,7 @@ BO_ 1014 BSM: 8 XXX
  SG_ ADJACENT_ENABLED : 7|1@0+ (1,0) [0|1] "" XXX
  SG_ APPROACHING_ENABLED : 15|1@0+ (1,0) [0|1] "" XXX
 
+CM_ SG_ 581 GAS_PEDAL "it seems slightly filtered";
 CM_ SG_ 1014 L_ADJACENT "vehicle adjacent left side of car. enabled above 10mph, regardless of ADJACENT_ENABLED or APPROACHING_ENABLED";
 CM_ SG_ 1014 L_APPROACHING "vehicle approaching from left side of car. enabled above 10mph, regardless of ADJACENT_ENABLED or APPROACHING_ENABLED";
 CM_ SG_ 1014 R_ADJACENT "vehicle adjacent right side of car. enabled above 10mph, regardless of ADJACENT_ENABLED or APPROACHING_ENABLED";
