@@ -83,6 +83,10 @@ Q_PROPERTY(QString roadName MEMBER roadName NOTIFY valueChanged);
 
   Q_PROPERTY(bool standStill MEMBER standStill NOTIFY valueChanged);
   Q_PROPERTY(int standstillElapsedTime MEMBER standstillElapsedTime NOTIFY valueChanged);
+  Q_PROPERTY(bool left_blinker MEMBER left_blinker NOTIFY valueChanged);
+  Q_PROPERTY(bool right_blinker MEMBER right_blinker NOTIFY valueChanged);
+  Q_PROPERTY(int blinker_rate MEMBER blinker_rate NOTIFY valueChanged);
+
 
 public:
   explicit OnroadHud(QWidget *parent);
@@ -173,6 +177,9 @@ private:
 
   bool standStill;
   int standstillElapsedTime;
+  bool left_blinker = false;
+  bool right_blinker = false;
+  int blinker_rate = 120;
 
 signals:
   void valueChanged();
