@@ -6,7 +6,7 @@ from opendbc.can.can_define import CANDefine
 from selfdrive.car.interfaces import CarStateBase
 from opendbc.can.parser import CANParser
 from selfdrive.config import Conversions as CV
-from selfdrive.car.toyota.values import CAR, DBC, STEER_THRESHOLD, NO_STOP_TIMER_CAR, TSS2_CAR, FEATURES, EV_HYBRID_CAR
+from selfdrive.car.toyota.values import CAR, DBC, STEER_THRESHOLD, NO_STOP_TIMER_CAR, TSS2_CAR, FEATURES, ToyotaFlags, EV_HYBRID_CAR
 from selfdrive.swaglog import cloudlog
 from common.realtime import DT_CTRL, sec_since_boot
 from common.params import Params
