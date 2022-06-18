@@ -190,7 +190,7 @@ static void update_state(UIState *s) {
     scene.lateralPlan.dynamicLaneProfileStatus = data.getDynamicLaneProfile();
   }
   if (sm.updated("carState")) {
-    scene.cs_data = sm["carState"].getCarState();
+    auto cs_data = sm["carState"].getCarState();
 
     if (scene.leftBlinker!=cs_data.getLeftBlinker() || scene.rightBlinker!=cs_data.getRightBlinker()) {
       scene.blinker_blinkingrate = 120;

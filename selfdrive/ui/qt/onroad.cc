@@ -510,6 +510,7 @@ void OnroadHud::updateState(const UIState &s) {
 }
 
 void OnroadHud::paintEvent(QPaintEvent *event) {
+  UIState *s = &QUIState::ui_state;
   QPainter p(this);
   p.setRenderHint(QPainter::Antialiasing);
 
@@ -659,8 +660,6 @@ void OnroadHud::paintEvent(QPaintEvent *event) {
       }
     }
   }
-
-
 }
 
 void OnroadHud::drawText(QPainter &p, int x, int y, const QString &text, int alpha) {

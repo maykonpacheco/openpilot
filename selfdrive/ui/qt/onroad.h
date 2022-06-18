@@ -92,6 +92,9 @@ public:
   explicit OnroadHud(QWidget *parent);
   void updateState(const UIState &s);
 
+protected:
+  inline QColor yellowColor(int alpha = 255) { return QColor(218, 202, 37, alpha); }
+
 private:
   void drawIcon(QPainter &p, int x, int y, QPixmap &img, QBrush bg, float opacity);
   void drawText(QPainter &p, int x, int y, const QString &text, int alpha = 255);
