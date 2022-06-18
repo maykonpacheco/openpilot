@@ -608,7 +608,7 @@ void OnroadHud::paintEvent(QPaintEvent *event) {
   }
 
   // opkr blinker
-  if (!comma_stock_ui || true) {
+  if ( /* !comma_stock_ui */ true) {
     float bw = 0;
     float bx = 0;
     float bh = 0;
