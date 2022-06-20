@@ -21,13 +21,15 @@ TMP_DIR = '/data/tmp'
 PYEXTRA_DIR = '/data/openpilot/pyextra'
 
 
-def wait_for_internet_connection():
+def wait_for_internet_connection(return_on_failure=False):
   while True:
     try:
       _ = urlopen('https://www.google.com/', timeout=10)
-      return
-    except Exception:
-      pass
+      return True
+    except Exception as e:
+      print(f'Wait for internet failed: {e}')
+      if return_on_failure:
+        return False
 
 
 def install_dep(spinner):
