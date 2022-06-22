@@ -66,7 +66,7 @@ def timestamp_local_osm_db():
 def is_local_osm_installed():
   api = overpy.Overpass()
   q = """
-      way(339201219);
+      way(662540606);
       (._;>;);
       out;
       """
@@ -77,8 +77,7 @@ def is_local_osm_installed():
     print(f'OSM local query returned with exit code: {completion.returncode}')
 
     if completion.returncode != 0:
-#      return False
-      return True
+     return False
 
     print(f'OSM Local query returned:\n\n{completion.stdout}')
 
@@ -87,11 +86,8 @@ def is_local_osm_installed():
     print(f"Test osm script returned {len(ways)} ways")
     print(f'OSM local server query {"succeded" if success else "failed"}')
 
-    return 1
-#    return success
+    return success
 
   except Exception as e:
     print(e)
-    return True
-#    return False
-
+    return False
