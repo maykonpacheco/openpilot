@@ -5,7 +5,7 @@ from selfdrive.mapd.lib.geo import R
 from selfdrive.mapd.lib.helpers import is_local_osm_installed
 
 
-_LOCAL_OSM = is_local_osm_installed()
+_LOCAL_OSM = is_local_osm_installed() or True 
 
 
 def create_way(way_id, node_ids, from_way):
