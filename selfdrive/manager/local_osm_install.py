@@ -17,7 +17,7 @@ INSTALL_DB_STEPS = 58
 
 
 def install_local_osm(spinner, steps=0, total_steps=INSTALL_OSM_STEPS + INSTALL_DB_STEPS):
-  osm_install = subprocess.Popen(['sh', './install_osm.sh'], cwd=os.path.join(BASEDIR, 'installer/custom/'),
+  osm_install = subprocess.Popen(['sh', './install_osm_C3.sh' if TICI else './install_osm.sh'], cwd=os.path.join(BASEDIR, 'installer/custom/'),
                                  stdout=subprocess.PIPE)
   # Read progress from install script and update spinner
   while True:
@@ -45,7 +45,7 @@ def install_osm_db(spinner, steps=0, total_steps=INSTALL_DB_STEPS):
       print(output.decode('utf8', 'replace'))
 
 
-if __name__ == "__main__" and TICI:
+if __name__ == "__main__":
   if wait_for_internet_connection(return_on_failure=True):
     is_osm_installed = is_local_osm_installed()
     is_db_updated = is_osm_db_up_to_date()
@@ -58,13 +58,14 @@ if __name__ == "__main__" and TICI:
       spinner.update_progress(0, 100)
 
       if is_osm_installed:
-        install_osm_db(spinner)
+        # install_osm_db(spinner)
+        pass
       else:
         install_local_osm(spinner)
-        install_osm_db(spinner, steps=INSTALL_OSM_STEPS, total_steps=INSTALL_OSM_STEPS + INSTALL_DB_STEPS)
+        # install_osm_db(spinner, steps=INSTALL_OSM_STEPS, total_steps=INSTALL_OSM_STEPS + INSTALL_DB_STEPS)
 
       timestamp_local_osm_db()
 
       if not is_local_osm_installed():
         print("Local OSM was not setup succesfully. Cleaning up.")
-        shutil.rmtree("/data/osm")
+        # shutil.rmtree("/data/osm")
