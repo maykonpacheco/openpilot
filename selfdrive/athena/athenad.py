@@ -194,6 +194,12 @@ def setNavDestination(latitude=0, longitude=0, place_name=None, place_details=No
 
   return {"success": 1}
 
+# AlexandreSato remote cruise speed
+@dispatcher.add_method
+def setCruiseSpeed(speed=0):
+  Params().put("RemoteCruiseSpeed", speed)
+  return {"success": 1}
+
 
 def scan_dir(path, prefix):
   files = list()

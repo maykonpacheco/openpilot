@@ -168,6 +168,7 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"RecordFront", PERSISTENT},
     {"RecordFrontLock", PERSISTENT},  // for the internal fleet
     {"ReleaseNotes", PERSISTENT},
+    {"RemoteCruiseSpeed", CLEAR_ON_MANAGER_START | CLEAR_ON_IGNITION_OFF}, // AlexandreSato remote cruise speed control
     {"ShouldDoUpdate", CLEAR_ON_MANAGER_START},
     {"ShowDebugUI", PERSISTENT},
     {"SnoozeUpdate", CLEAR_ON_MANAGER_START | CLEAR_ON_IGNITION_OFF},
