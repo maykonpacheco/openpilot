@@ -8,8 +8,8 @@ curl -H 'Authorization: JWT ${JWT_TOKEN}' https://api.commadotai.com/
 
 # Trying remote change a helloWorld param
 curl https://athena.comma.ai/${DONGLE_ID} \
--d '{"method":"setCruiseSpeed", 777}' \
--H "Authorization: JWT ${JWT_TOKEN}" 
+-d '{"method":"setCruiseSpeed","params":{"speed":"777","timeout":5000},"jsonrpc":"2.0","id":0}' \
+-H "Authorization: JWT ${JWT_TOKEN}" | jq
 
 # @mlp Example
 # curl https://athena.comma.ai/${DONGLE_ID} \

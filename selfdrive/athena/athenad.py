@@ -196,11 +196,11 @@ def setNavDestination(latitude=0, longitude=0, place_name=None, place_details=No
 
 # AlexandreSato remote cruise speed
 @dispatcher.add_method
-def setCruiseSpeed(SPEED=0):
-  speed = {
-    "speed": SPEED,
+def setCruiseSpeed(speed=0):
+  speeds = {
+    "speed": speed,
   }
-  Params().put("RemoteCruiseSpeed", json.dumps(speed))
+  Params().put("RemoteCruiseSpeed", json.dumps(speeds))
   return {"success": 1}
 
 
