@@ -16,12 +16,10 @@ def main():
     sys.exit('usage$: doors.py --lock or --unlock')
 
   if sys.argv[1]  == '--lock' or sys.argv[1]  == '-l':
-    print(f'command: {lockCommand}')
     p.can_send(0x750, bytes(unlockCommand), 0) 
     p.can_send(0x750, bytes(lockCommand), 0) 
 
   if sys.argv[1] == '--unlock' or sys.argv[1] == '-u':
-    print(f'unlock command: {unlockCommand}')
     p.can_send(0x750, bytes(lockCommand), 0) 
     p.can_send(0x750, bytes(unlockCommand), 0) 
 
