@@ -13,7 +13,7 @@ def main():
 
   # args
   if len(sys.argv) != 2:
-    sys.exit('usage$: doors.py --lock or --unlock')
+    sys.exit('usage:\n\nroot@localhost: /data/openpilot$ killall tmux\nroot@localhost: /data/openpilot$ doors.py --lock\nroot@localhost: /data/openpilot$ --unlock\nroot@localhost: /data/openpilot$ reboot')
 
   if sys.argv[1]  == '--lock' or sys.argv[1]  == '-l':
     p.can_send(0x750, bytes(unlockCommand), 0) 
