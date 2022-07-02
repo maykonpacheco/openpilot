@@ -18,8 +18,12 @@ def main():
   if sys.argv[1]  == '--lock' or sys.argv[1]  == '-l':
     p.can_send(0x750, bytes(unlockCommand), 0) 
     p.can_send(0x750, bytes(lockCommand), 0) 
+    p.can_send(0x750, bytes(unlockCommand), 0) 
+    p.can_send(0x750, bytes(lockCommand), 0) 
 
   if sys.argv[1] == '--unlock' or sys.argv[1] == '-u':
+    p.can_send(0x750, bytes(lockCommand), 0) 
+    p.can_send(0x750, bytes(unlockCommand), 0) 
     p.can_send(0x750, bytes(lockCommand), 0) 
     p.can_send(0x750, bytes(unlockCommand), 0) 
 
