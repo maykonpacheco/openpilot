@@ -226,7 +226,7 @@ Thank you for your continuous love and support! Enjoy 🥰
 
 **PayPal QR Code:**
 
-![Paypall.png.png](sunnyhaibin0850_qrcode_paypal.me.png)
+![Paypall.png.png](Paypall.png)
 
 🎆 Pull Requests 🎆
 ---
