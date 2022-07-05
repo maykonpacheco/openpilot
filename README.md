@@ -219,14 +219,14 @@ Thank you for your continuous love and support! Enjoy 🥰
 
 **PayPal:**
 
-<a href="https://paypal.me/sunnyhaibin0850" target="_blank">
+<a href="https://www.paypal.com/donate/?hosted_button_id=JN4E8PTL4QBZG" target="_blank">
 <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" alt="PayPal this" title="PayPal - The safer, easier way to pay online!" border="0" />
 </a>
 <br></br>
 
 **PayPal QR Code:**
 
-![sunnyhaibin0850_qrcode_paypal.me.png](sunnyhaibin0850_qrcode_paypal.me.png)
+![Paypall.png](Alexandre Sato Paypall.png)
 
 🎆 Pull Requests 🎆
 ---
