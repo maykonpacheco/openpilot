@@ -53,12 +53,8 @@ This fork is recommended to be used for Hyundai/Kia/Genesis (**HKG**), Honda, To
   * Green🟢: M.A.D.S. engaged
   * White⚪: M.A.D.S. suspended or disengaged
 * **Lane Color** - Various lane colors to display real-time Lane Model and M.A.D.S. engagemenet status
-  * 0.8.14 and later:
-    * Blue🔵: Laneful mode, M.A.D.S. engaged
-    * Green🟢: Laneless mode, M.A.D.S. engaged
-  * Before and not 0.8.14:
-    * Green🟢: Laneful mode, M.A.D.S. engaged
-    * Red🔴: Laneless mode, M.A.D.S. engaged
+  * Green🟢: Laneful mode, M.A.D.S. engaged
+  * Red🔴: Laneless mode, M.A.D.S. engaged
   * White⚪: M.A.D.S. suspended or disengaged
   * Black⚫: M.A.D.S. engaged, steering is being manually override by user
 * **Developer (Dev) UI** - Display various real-time metrics on screen while driving
@@ -82,7 +78,7 @@ This fork is recommended to be used for Hyundai/Kia/Genesis (**HKG**), Honda, To
 The goal of Modified Assistive Driving Safety (MADS) is to enhance the user driving experience with modified behaviors of driving assist engagements. This feature complies with comma.ai's safety rules as accurately as possible with the following changes:
 * sunnypilot Automatic Lane Centering and ACC/SCC can be engaged independently of each other
 * Dedicated button to toggle sunnypilot ALC:
-  * `LFA` button: Newer HKG cars with `LFA` button
+  * `LFA` button: Newer HKG cars with `LFA` butotn
   * `LKAS` button: Honda, Toyota, Global Subaru
   * `CRUISE (MAIN)` button: HKG cars without `LFA` button, Pre-Global Subaru
 * `SET-` button enables ACC/SCC
@@ -230,7 +226,7 @@ Thank you for your continuous love and support! Enjoy 🥰
 
 **PayPal QR Code:**
 
-![Paypall.png](Alexandre Sato Paypall.png)
+![Paypall.png.png](sunnyhaibin0850_qrcode_paypal.me.png)
 
 🎆 Pull Requests 🎆
 ---
