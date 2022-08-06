@@ -1,3 +1,7 @@
+AnimalPilot - Version 0.8.12-4 (2022-08-06)
+========================
+* FIXED: no more chime and reset setSpeed when braking at standStill
+
 AnimalPilot - Version 0.8.12-4 (2022-06-30)
 ========================
 * IMPROVED: Increased steering torque
